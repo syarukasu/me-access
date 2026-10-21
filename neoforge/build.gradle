@@ -1,0 +1,17 @@
+plugins { id 'java-library'; id 'net.neoforged.moddev' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+base { archivesName = 'me-access-neoforge-1.21.1' }
+neoForge {
+    version = '21.1.247'
+    runs {
+        client { client(); gameDirectory = file('run'); jvmArgument '-Xmx2G' }
+        server { server(); gameDirectory = file('run'); programArgument '--nogui' }
+    }
+    mods { me_remote_machine { sourceSet sourceSets.main } }
+}
+dependencies {
+    implementation('org.appliedenergistics:appliedenergistics2:19.2.18') { transitive = false }
+    runtimeOnly('org.appliedenergistics:guideme:21.1.17') { transitive = false }
+    compileOnly('mekanism:Mekanism:1.21.1-10.7.19.85') { transitive = false }
+    if (project.hasProperty('withMekanism')) runtimeOnly('mekanism:Mekanism:1.21.1-10.7.19.85') { transitive = false }
+}

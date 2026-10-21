@@ -1,0 +1,30 @@
+buildscript {
+    repositories { maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }; mavenCentral() }
+    dependencies { classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT' }
+}
+plugins {
+    id 'net.minecraftforge.gradle' version '6.0.54' apply false
+    id 'net.neoforged.moddev' version '2.0.143' apply false
+}
+allprojects {
+    group = 'com.syaru.meremote'
+    version = '0.1.0-alpha.10'
+    repositories {
+        mavenCentral()
+        maven { url = 'https://modmaven.dev/' }
+        maven { url = 'https://modmaven.dev/mekanism' }
+    }
+}
+subprojects {
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+    plugins.withId('java') {
+        sourceSets.main.java.srcDir '../shared/src/main/java'
+        sourceSets.main.resources.srcDir '../shared/src/main/resources'
+        tasks.named('jar') { from rootProject.files('LICENSE', 'LICENSE-MIT', 'LICENSING.md'); preserveFileTimestamps = false; reproducibleFileOrder = true }
+        tasks.named('processResources') {
+            inputs.property 'version', project.version
+            filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml']) { expand version: project.version }
+        }
+    }
+}
+if (file('local/qa.gradle').isFile()) apply from: 'local/qa.gradle'

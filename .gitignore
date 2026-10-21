@@ -1,0 +1,12 @@
+.gradle/
+**/build/
+**/run/
+local/
+dist/
+*.log
+*.hprof
+**/src/test/
+**/src/gameTest/
+**/src/clientSmoke/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
